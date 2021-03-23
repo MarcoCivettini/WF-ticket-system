@@ -3,15 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Helper\ApiResponse;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/api/team", name="team")
@@ -24,19 +21,9 @@ class TeamController extends AbstractController
     public function index(TeamRepository $teamRepository): Response
     {
         $teams = $teamRepository->findAll();
-        $encoders = [new JsonEncoder()]; // If no need for XmlEncoder
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers, $encoders);
-
-        // Serialize your object in Json
-        $jsonObject = $serializer->serialize($teams, 'json', [
-            'circular_reference_handler' => function ($object) {
-                return $object->getId();
-            }
-        ]);
 
         // For instance, return a Response with encoded Json
-        return new Response($jsonObject, 200, ['Content-Type' => 'application/json']);
+        return new ApiResponse($teams, Response::HTTP_OK);
     }
     /**
      * @Route("/create", name="create")
@@ -51,7 +38,7 @@ class TeamController extends AbstractController
         $em->persist($team);
         $em->flush();
 
-        return $this->json('');
+        return new ApiResponse(null, Response::HTTP_OK);
     }
 
     /**
