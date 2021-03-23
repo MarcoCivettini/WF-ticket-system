@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helper;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -10,13 +11,15 @@ class ApiResponse extends Response
 {
     public function __construct($item, int $statusCode, $header = ['Content-Type' => 'application/json'])
     {
-        $this->content = $this->serializeObjectToJson($item);
-        $this->status = $statusCode;
-        $this->$header = $header;
-
+        parent::__construct(null, $statusCode, $header);
+        $jsonObject = $this->serializeObjectToJson($item);
+        $this->setContent($jsonObject);
     }
 
-    private function serializeObjectToJson($item): string
+    /**
+     * Serialize object and prevent circular
+     */
+    private function serializeObjectToJson($item)
     {
         $encoders = [new JsonEncoder()]; // If no need for XmlEncoder
         $normalizers = [new ObjectNormalizer()];

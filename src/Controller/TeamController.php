@@ -22,7 +22,6 @@ class TeamController extends AbstractController
     {
         $teams = $teamRepository->findAll();
 
-        // For instance, return a Response with encoded Json
         return new ApiResponse($teams, Response::HTTP_OK);
     }
     /**
