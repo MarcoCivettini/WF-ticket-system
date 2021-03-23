@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class User
 {
+
+    private function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
 
     /**
      * @ORM\Id
@@ -37,6 +43,14 @@ class User
      * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
      */
     private $team;
+
+    /**
+     * Project linked to the PM.
+     * if use Inheritance Mapping i can extend the User entity
+     * and declare this property only on the SuperClass (ProductManager extends User)
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="user")
+     */
+    private $projects;
 
     public function getId(): ?int
     {
@@ -74,5 +88,16 @@ class User
     {
         $this->team = $team;
         return $this;
+    }
+
+    public function addProject(Project $project): self
+    {
+        $this->projects->add($project->setUser($this));
+        return $this;
+    }
+
+    public function getProjects()
+    {
+        return $this->projects;
     }
 }
