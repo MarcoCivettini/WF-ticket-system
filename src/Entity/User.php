@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,6 +44,16 @@ class User
      * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
      */
     private $team;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $role;
+
+    /*
+    * @ORM\ManyToMany(targetEntity="Task", inversedBy="users")
+    */
+    private $tasks;
 
     /**
      * Project linked to the PM.
@@ -87,6 +98,17 @@ class User
     public function setTeam(Team $team): self
     {
         $this->team = $team;
+        return $this;
+    }
+
+    public function getRole(): UserRole
+    {
+        return $this->role;
+    }
+
+    public function setRole(UserRole $role): self
+    {
+        $this->role = $role;
         return $this;
     }
 

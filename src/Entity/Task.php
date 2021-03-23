@@ -34,6 +34,12 @@ class Task
      */
     private $deadlineDate;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="tasks")
+     * @ORM\JoinTable(name="users_tasks")
+     */
+    private $users;
+
     public function getId(): ?int
     {
         return $this->id;
