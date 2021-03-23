@@ -12,10 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Team
 {
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
 
     /**
      * @ORM\Id
@@ -35,6 +31,11 @@ class Team
      */
     private $users;
 
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Model\TaskStatus;
 use App\Repository\TaskRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -39,6 +40,11 @@ class Task
      * @ORM\JoinTable(name="users_tasks")
      */
     private $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,5 +82,16 @@ class Task
     {
         $this->deadlineDate = $date;
         return $this;
+    }
+
+    public function addUser(User $user): self
+    {
+        $this->users->add($user);
+        return $this;
+    }
+
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

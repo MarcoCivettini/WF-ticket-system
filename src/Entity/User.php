@@ -13,11 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
 
-    private function __construct()
-    {
-        $this->projects = new ArrayCollection();
-    }
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -63,6 +58,12 @@ class User
      */
     private $projects;
 
+    
+    public function __construct()
+    {
+        $this->projects = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -101,12 +102,12 @@ class User
         return $this;
     }
 
-    public function getRole(): UserRole
+    public function getRole(): int
     {
         return $this->role;
     }
 
-    public function setRole(UserRole $role): self
+    public function setRole(int $role): self
     {
         $this->role = $role;
         return $this;
@@ -121,5 +122,16 @@ class User
     public function getProjects()
     {
         return $this->projects;
+    }
+
+    public function addTask(Task $task): self
+    {
+        $this->tasks->add($task);
+        return $this;
+    }
+
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }
