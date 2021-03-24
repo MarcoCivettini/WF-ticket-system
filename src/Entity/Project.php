@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +34,15 @@ class Project
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Task", mappedBy="project")
+     */
+    private $tasks;
+
+    public function __construct()
+    {
+        $this->tasks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -58,5 +68,16 @@ class Project
     {
         $this->user = $user;
         return $this;
+    }
+
+    public function addTask(Task $task): self
+    {
+        $this->tasks->add($task->setProject($this));
+        return $this;
+    }
+
+    public function getTasks()
+    {
+        return $this->tasks;
     }
 }

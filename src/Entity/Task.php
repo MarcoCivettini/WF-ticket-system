@@ -41,6 +41,16 @@ class Task
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $project_id;
+    /**
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="tasks")
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+     */
+    private $project;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -93,5 +103,15 @@ class Task
     public function getUsers()
     {
         return $this->users;
+    }
+
+    public function getProject()
+    {
+        return $this->project;
+    }
+    public function setProject(Project $project): self
+    {
+        $this->project = $project;
+        return $this;
     }
 }
