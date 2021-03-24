@@ -45,9 +45,10 @@ class User
      */
     private $role;
 
-    /*
-    * @ORM\ManyToMany(targetEntity="Task", inversedBy="users")
-    */
+    /**
+     * @ORM\ManyToMany(targetEntity="Task", inversedBy="users")
+     * @ORM\JoinTable(name="users_tasks")
+     */
     private $tasks;
 
     /**
@@ -58,10 +59,11 @@ class User
      */
     private $projects;
 
-    
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->tasks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -126,7 +128,14 @@ class User
 
     public function addTask(Task $task): self
     {
+        $task->addUser($this);
         $this->tasks->add($task);
+        return $this;
+    }
+
+    public function removeTask(Task $task): self
+    {
+        $this->tasks->removeElement($task);
         return $this;
     }
 

@@ -1,7 +1,7 @@
 ORM => Doctrine
 Framework => Symfony
 DB => mysql
-PHP => 8
+PHP => 7.3.24
 
 start dev server
 php -S 127.0.0.1:8080 -t public

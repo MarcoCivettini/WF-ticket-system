@@ -158,7 +158,7 @@ class MainController extends AbstractController
         $criteriaTask1Devs = Criteria::create()->Where(Criteria::expr()->eq('username', 'Luca'))->orWhere(Criteria::expr()->eq('username', 'Mirco'));
         $task1Users = $userRepository->matching($criteriaTask1Devs);
         foreach ($task1Users as $user) {
-            $task1->addUser($user);
+            $user->addTask($task1);
         }
         $task1Project = $projectRepository->findOneBy(array('name' => 'Project 1'));
         if ($task1Project->getId()) {
@@ -174,7 +174,7 @@ class MainController extends AbstractController
         }
         $task2User = $userRepository->findOneBy(array('username' => 'Luca', 'role' => UserRole::DEV));
         if ($task2User->getId()) {
-            $task2->addUser($task2User);
+            $task2User->addTask($task2);
         }
 
         $tasks->add($task1);

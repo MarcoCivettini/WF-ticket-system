@@ -35,10 +35,9 @@ class Task
      */
     private $deadlineDate;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="tasks")
-     * @ORM\JoinTable(name="users_tasks")
-     */
+    /*
+    * @ORM\ManyToMany(targetEntity="User", mappedBy="tasks")
+    */
     private $users;
 
     /**
@@ -96,7 +95,7 @@ class Task
 
     public function addUser(User $user): self
     {
-        $this->users->add($user);
+        $this->users[] = $user;
         return $this;
     }
 
