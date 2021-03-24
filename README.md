@@ -12,7 +12,7 @@ php bin/console doctrine:schema:update --force
 Data seeding
 
 database populated
-
+```
 select * from user;
 +----+----------+----------+---------+------+
 | id | password | username | team_id | role |
@@ -61,3 +61,4 @@ mysql> select * from users_tasks;
 |       2 |       4 |
 +---------+---------+
 3 rows in set (0.00 sec)
+```
