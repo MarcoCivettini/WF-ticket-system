@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\Helper\ApiResponse;
 use App\Model\TaskStatus;
 use App\Model\UserRole;
+use App\Repository\ProjectRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,7 +32,7 @@ class MainController extends AbstractController
     /**
      * @Route("/seeding", name="seeding")
      */
-    public function tempSeeding(UserRepository $userRepository): Response
+    public function tempSeeding(UserRepository $userRepository, ProjectRepository $projectRepository): Response
     {
         $em = $this->getDoctrine()->getManager();
         // insert basic users
@@ -53,7 +54,7 @@ class MainController extends AbstractController
         }
         $em->flush();
 
-        $tasks = $this->createTasks($userRepository);
+        $tasks = $this->createTasks($userRepository, $projectRepository);
         foreach ($tasks as $task) {
             $em->persist($task);
         }
@@ -146,21 +147,38 @@ class MainController extends AbstractController
         return $projects;
     }
 
-    private function createTasks(UserRepository $userRepository): ArrayCollection
+    private function createTasks(UserRepository $userRepository, ProjectRepository $projectRepository): ArrayCollection
     {
         $tasks = new ArrayCollection();
-
+        // tassk 1
         $task1 = new Task();
-        $task1->setDescription('Implement realtime chat with socket');
         $nextWeekDate = new DateTime();
         $nextWeekDate->setISODate($nextWeekDate->format('o'), $nextWeekDate->format('W') + 1);
-        $task1->setDeadlineDate($nextWeekDate)->setStatus(TaskStatus::OnWorking);
+        $task1->setDescription('Implement realtime chat with socket')->setDeadlineDate($nextWeekDate)->setStatus(TaskStatus::OnWorking);
         $criteriaTask1Devs = Criteria::create()->Where(Criteria::expr()->eq('username', 'Luca'))->orWhere(Criteria::expr()->eq('username', 'Mirco'));
-        $users = $userRepository->matching($criteriaTask1Devs);
-        foreach ($users as $user) {
+        $task1Users = $userRepository->matching($criteriaTask1Devs);
+        foreach ($task1Users as $user) {
             $task1->addUser($user);
         }
+        $task1Project = $projectRepository->findOneBy(array('name' => 'Project 1'));
+        if ($task1Project->getId()) {
+            $task1->setProject($task1Project);
+        }
+        // task 2
+        $task2 = new Task();
+        $yesterdayDate = new DateTime('yesterday');
+        $task2->setDescription('Create shopping cart feature')->setDeadlineDate($yesterdayDate)->setStatus(TaskStatus::OnWorking);
+        $task2Project = $projectRepository->findOneBy(array('name' => 'Project 2'));
+        if ($task2Project->getId()) {
+            $task2->setProject($task2Project);
+        }
+        $task2User = $userRepository->findOneBy(array('username' => 'Luca', 'role' => UserRole::DEV));
+        if ($task2User->getId()) {
+            $task2->addUser($task2User);
+        }
+
         $tasks->add($task1);
+        $tasks->add($task2);
         return $tasks;
     }
 }
