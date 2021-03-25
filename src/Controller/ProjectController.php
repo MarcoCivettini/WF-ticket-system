@@ -19,13 +19,6 @@ class ProjectController extends AbstractController
      */
     public function getProjectCrossTeam(ProjectRepository $projectRepository): Response
     {
-        $crossTeams = new ArrayCollection();
-        $projects = $projectRepository->findALl();
-        foreach ($projects as $project) {
-            $tasks = $project->getTasks();
-            foreach ($tasks as $task) {
-                return new ApiResponse($task->getUsers(), Response::HTTP_OK);
-            }
-        }
+        return new ApiResponse('Not implemented yet', Response::HTTP_OK);
     }
 }
