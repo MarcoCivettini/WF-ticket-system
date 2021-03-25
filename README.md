@@ -1,21 +1,26 @@
-ORM => Doctrine
-Framework => Symfony
-DB => mysql
-PHP => 7.3.24
+# WebFormat ticket system #
+*   ORM => Dictrine
+*   Framework => Symfony
+*   DB => mysql
+*   PHP => 7.3.24
 
-start dev server
-php -S 127.0.0.1:8080 -t public
+1. [x] Assegnare un task ad uno sviluppatore. 
+2. [x] Rimuovere un task da uno sviluppatore. 
+3. [x] Mostrare tutti i task "in elaborazione" di uno sviluppatore. 
+4. [x] Mostrare il PM di riferimento di un DEV. 
 
-Schema update
+
+## Schema update ##
+```
 php bin/console doctrine:schema:update --force
+```
 
-Data seeding
-To launch the database seeding you have to copy/paste the command below.
-
+## Schema update ##
 ```
 php bin/console seeding
 ```
-database populated
+
+### Database after seeding ###
 ```
 select * from user;
 +----+----------+----------+---------+------+
