@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\TaskStatus;
 use App\Model\UserRole;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -142,5 +143,12 @@ class User
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    public function getActivedTask()
+    {
+        return $this->tasks->filter(function (Task $task) {
+            return $task->getStatus() == TaskStatus::OnWorking;
+        });
     }
 }

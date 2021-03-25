@@ -31,7 +31,7 @@ class Task
     private $status;
 
     /**
-     * @ORM\Column(type="datetime", name="deadline_date")
+     * @ORM\Column(type="date", name="deadline_date")
      */
     private $deadlineDate;
 
@@ -82,9 +82,9 @@ class Task
         return $this;
     }
 
-    public function getDeadlineDate(): DateTime
+    public function getDeadlineDate()
     {
-        return $this->deadlineDate;
+        return date_format($this->deadlineDate, 'Y-m-d');
     }
 
     public function setDeadlineDate(DateTime $date): self
