@@ -9,6 +9,37 @@
 3. [x] Mostrare tutti i task "in elaborazione" di uno sviluppatore. 
 4. [x] Mostrare il PM di riferimento di un DEV. 
 
+## Web server ##
+
+il server espone le seguenti api testabili facilmente tramite postman.
+
+#### Assegnazione di un task ad un utente ####
+```
+PUT => http://127.0.0.1:8080/api/task/assign/{taskId}
+```
+Json payload
+```
+{
+	"userId": 4
+}
+```
+
+#### Rimozione di un task da un utente ####
+```
+DELETE => http://127.0.0.1:8080/api/task/remove/{userId}/{taskId}
+```
+#### Visualizzazione task in lavorazione da uno sviluppatore ####
+```
+GET => http://127.0.0.1:8080/api/task/user/{userId}
+```
+#### Visualizzare il PM di uno sviluppatore ####
+```
+GET => http://127.0.0.1:8080/api/user/pm/{userId}
+```
+#### Mostra l'eleco dei team con i loro sviluppatori ####
+```
+GET => http://127.0.0.1:8080/api/team
+```
 
 ## Schema update ##
 ```
