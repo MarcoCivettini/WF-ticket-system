@@ -1,4 +1,4 @@
-# WebFormat ticket system #
+# WF ticket system #
 *   ORM => Dictrine
 *   Framework => Symfony
 *   DB => mysql
