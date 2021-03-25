@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Team;
 use App\Entity\User;
+use App\Model\UserRole;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +21,10 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    public function getTeamLeader(Team $team)
+    {
+        return $this->findOneBy(array('team_id' => $team->getId(), 'role' => UserRole::PM));
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

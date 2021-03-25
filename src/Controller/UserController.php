@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Helper\ApiResponse;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/api/user", name="user")
@@ -16,41 +20,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
-     * @param UserRepository $userRepository
+     * Get PM of user
+     * @param userId id of user to get team PM
+     * @Route("/pm/{userId}", name="userPm", methods = {"GET"})
      */
-    public function index(UserRepository $userRepository): JsonResponse
+    public function getUserPm(UserRepository $userRepository, $userId): Response
     {
-        $users = $userRepository->findAll();
+        $user = $userRepository->find($userId);
+        if ($user == null) {
+            return new ApiResponse(array('message' => 'User not found'), Response::HTTP_NOT_FOUND);
+        }
+        $teamLeader = $userRepository->getTeamLeader($user->getTeam());
 
-        return $this->json($users);
-    }
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $response = $serializer->normalize($teamLeader, null, [AbstractNormalizer::ATTRIBUTES => ['id', 'username', 'team' => ['id', 'name']]]);
 
-    /**
-     * @Route("/create", name="create")
-     * @param Request $request
-     */
-    public function create(Request $request): JsonResponse
-    {
-        $user = new User();
-
-        $user->setUsername('marco');
-        $user->setPassword('marco');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-
-        return new JsonResponse('', 200);
-    }
-
-    /**
-     * @Route("/{id}", name="userDetail")
-     * @param Request $request
-     */
-    public function userDetail($id, UserRepository $userRepository)
-    {
-        $user = $userRepository->find($id);
-        return $this->json($user);
+        return new ApiResponse($response, Response::HTTP_OK);
     }
 }

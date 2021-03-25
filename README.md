@@ -10,7 +10,11 @@ Schema update
 php bin/console doctrine:schema:update --force
 
 Data seeding
+To launch the database seeding you have to copy/paste the command below.
 
+```
+php bin/console seeding
+```
 database populated
 ```
 select * from user;

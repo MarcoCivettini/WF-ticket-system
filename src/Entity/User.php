@@ -37,7 +37,7 @@ class User
     private $team_id;
     /**
      * @ORM\ManyToOne(targetEntity="Team", inversedBy="users")
-     * @ORM\JoinColumn(name="team_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      */
     private $team;
 

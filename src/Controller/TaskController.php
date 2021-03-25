@@ -102,8 +102,8 @@ class TaskController extends AbstractController
             return new ApiResponse(array('message' => 'User not found'), Response::HTTP_NOT_FOUND);
         }
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $data = $serializer->normalize($user->getActivedTask(), null, [AbstractNormalizer::ATTRIBUTES => ['id', 'description', 'deadlineDate']]);
+        $response = $serializer->normalize($user->getActivedTask(), null, [AbstractNormalizer::ATTRIBUTES => ['id', 'description', 'deadlineDate']]);
 
-        return new ApiResponse($data, Response::HTTP_OK);
+        return new ApiResponse($response, Response::HTTP_OK);
     }
 }
